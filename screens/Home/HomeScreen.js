@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./styles";
 import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
-import CustomHeader from "../../components/CustomHeader";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
 export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>

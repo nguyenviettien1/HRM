@@ -1,15 +1,8 @@
 import * as React from "react";
 import styles from "./styles";
-import { Text, View, SafeAreaView, Image } from "react-native";
-import CustomHeader from "../../components/CustomHeader";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
-import {
-  MaterialCommunityIcons,
-  FontAwesome,
-  Entypo,
-  MaterialIcons,
-  FontAwesome5,
-} from "@expo/vector-icons";
+import { Text, View, SafeAreaView } from "react-native";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
+import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 export default function SupportScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>

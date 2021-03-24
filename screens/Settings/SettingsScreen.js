@@ -2,8 +2,8 @@ import * as React from "react";
 import styles from "./styles";
 import { Drawer } from "react-native-paper";
 import { SafeAreaView, ScrollView } from "react-native";
-import CustomHeader from "../../components/CustomHeader";
-import ProfileHeader from "../../components/ProfileHeader";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
+import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 export default function SettingsScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>

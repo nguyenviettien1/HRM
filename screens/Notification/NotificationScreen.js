@@ -2,7 +2,7 @@ import * as React from "react";
 import styles from "./styles";
 import { Text, View, SafeAreaView, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import CustomHeader from "../../components/CustomHeader";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
 
 export default function NotificationScreen({ navigation }) {
   return (

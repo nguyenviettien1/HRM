@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import { View, SafeAreaView, StyleSheet } from "react-native";
-import CustomHeader from "../../components/CustomHeader";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { Drawer } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
-import ProfileHeader from "../../components/ProfileHeader";
+import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 export default function SettingsScreenDetail({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
