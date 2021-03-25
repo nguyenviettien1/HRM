@@ -6,7 +6,7 @@ export default function ProfileHeader() {
     <View style={styles.userInfoSection}>
       <View style={{ flexDirection: "row", marginTop: 15 }}>
         <Avatar.Image
-          source={require("../assets/vietcuong.jpg")}
+          source={require("../../assets/vietcuong.jpg")}
           size={50}
         ></Avatar.Image>
         <View style={{ flexDirection: "column", marginLeft: 15 }}>

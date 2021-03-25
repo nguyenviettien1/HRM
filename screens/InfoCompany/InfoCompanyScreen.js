@@ -6,10 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export default function InfoCompanyScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <CustomHeader
-        title="THÔNG TIN CÔNG TY"
-        navigation={navigation}
-      ></CustomHeader>
+      <CustomHeader title="CÔNG TY" navigation={navigation}></CustomHeader>
       <View>
         <View style={{ flexDirection: "row", margin: 10, height: 98 }}>
           <Image

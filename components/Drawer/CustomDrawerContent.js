@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import styles from "./styles";
+import { Text, View } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useState } from "react";
 import {
@@ -82,54 +83,9 @@ export default function CustomDrawerContent(props) {
         <Drawer.Item
           icon="exit-to-app"
           label="Đăng xuất"
-          onPress={() => {}}
+          onPress={() => props.navigation.navigate("LoginScreen")}
         ></Drawer.Item>
       </Drawer.Section>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  drawerContent: {
-    flex: 1,
-  },
-  userInfoSection: {
-    paddingLeft: 20,
-  },
-  title: {
-    fontSize: 16,
-    marginTop: 3,
-    fontWeight: "bold",
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-  },
-  row: {
-    marginTop: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  section: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: "bold",
-    marginRight: 3,
-  },
-  drawerSection: {
-    marginTop: 15,
-  },
-  bottomDrawerSection: {
-    marginBottom: 15,
-    borderTopColor: "#f4f4f4",
-    borderTopWidth: 1,
-  },
-  preference: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-});

@@ -27,7 +27,7 @@ export default function CustomHeader({ title, isHome, navigation }) {
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Image
               style={{ width: 30, height: 30, marginLeft: 5 }}
-              source={require("../assets/menu.png")}
+              source={require("../../assets/menu.png")}
               resizeMode="contain"
             ></Image>
           </TouchableOpacity>
@@ -40,7 +40,7 @@ export default function CustomHeader({ title, isHome, navigation }) {
           >
             <Image
               style={{ height: 20, width: 20, marginLeft: 5 }}
-              source={require("../assets/back.png")}
+              source={require("../../assets/back.png")}
               resizeMode="contain"
             ></Image>
             <Text>Back</Text>

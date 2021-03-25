@@ -1,5 +1,4 @@
 import * as React from "react";
-import { View, StyleSheet, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -9,15 +8,17 @@ import ProfileUserScreen from "./screens/ProfileUser/ProfileUserScreen";
 import SettingsStack from "./screens/Settings/SettingsStack";
 import InfoCompanyScreen from "./screens/InfoCompany/InfoCompanyScreen";
 import SupportScreen from "./screens/Support/SupportScreen";
+import LoginScreen from "./screens/Authentication/LoginScreen";
 const DrawerFull = createDrawerNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <DrawerFull.Navigator
-        initialRouteName="MenuTab"
+        initialRouteName="LoginScreen"
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
+        <DrawerFull.Screen name="LoginScreen" component={LoginScreen} />
         <DrawerFull.Screen name="MenuTab" component={TabNavigator} />
         <DrawerFull.Screen
           name="ProfileUserScreen"
