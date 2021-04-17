@@ -11,29 +11,19 @@ import {
   Switch,
   Drawer,
 } from "react-native-paper";
+import { store } from "../../utils/store";
+import ProfileHeader from "../ProfileHeader/ProfileHeader";
 export default function CustomDrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
-          <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: "row", marginTop: 15 }}>
-              <Avatar.Image
-                source={require("../../assets/vietcuong.jpg")}
-                size={50}
-              ></Avatar.Image>
-              <View style={{ flexDirection: "column", marginLeft: 15 }}>
-                <Title style={styles.title}>Trần Việt Cường</Title>
-                <Caption style={styles.caption}>
-                  cuong.tran@lazerback.com
-                </Caption>
-              </View>
-            </View>
-          </View>
+          <ProfileHeader></ProfileHeader>
           <Drawer.Section style={styles.drawerSection}>
             <Drawer.Item
               icon="account-outline"
@@ -83,7 +73,11 @@ export default function CustomDrawerContent(props) {
         <Drawer.Item
           icon="exit-to-app"
           label="Đăng xuất"
-          onPress={() => props.navigation.navigate("LoginScreen")}
+          onPress={() => {
+            store.removeAccessToken();
+            store.removeUserInfo();
+            props.navigation.navigate("LoginScreen");
+          }}
         ></Drawer.Item>
       </Drawer.Section>
     </View>

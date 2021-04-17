@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     left: 22,
     zIndex: 10,
   },
-  inputPassword: {
+  inputText: {
     height: 60,
     borderRadius: 30,
     paddingHorizontal: 30,

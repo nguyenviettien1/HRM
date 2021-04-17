@@ -1,8 +1,10 @@
 import * as React from "react";
 import styles from "./styles";
-import { Text, View, SafeAreaView, Image } from "react-native";
+import { Text, View, SafeAreaView, Image, Alert } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { ScrollView } from "react-native-gesture-handler";
+import { useEffect } from "react/cjs/react.development";
+import { store } from "../../utils/store";
 import {
   MaterialCommunityIcons,
   FontAwesome,
@@ -11,6 +13,10 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 export default function ProfileUserScreen({ navigation }) {
+  useEffect(() => {
+    //getInfo();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomHeader
