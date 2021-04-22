@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   viewInfo: {
     flexDirection: "row",
-    width: 110,
+    width: 130,
   },
   age: {
     paddingLeft: 4,

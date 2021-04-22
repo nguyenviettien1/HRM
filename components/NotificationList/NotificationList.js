@@ -6,6 +6,12 @@ export default function NotificationList(props) {
 
   return (
     <View style={styles.contain}>
+      <View>
+        <Image
+          style={styles.image}
+          source={{ uri: "data:image/png;base64," + notiList.imageMobile }}
+        ></Image>
+      </View>
       <View style={styles.noti}>
         <Text style={styles.title}>{notiList.title}</Text>
         <Text>{notiList.content}</Text>

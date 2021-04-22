@@ -1,16 +1,9 @@
 import * as React from "react";
 import styles from "./styles";
-import { Text, View } from "react-native";
+import { Text, View, DeviceEventEmitter } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useState } from "react";
-import {
-  Avatar,
-  Title,
-  Caption,
-  TouchableRipple,
-  Switch,
-  Drawer,
-} from "react-native-paper";
+import { TouchableRipple, Switch, Drawer } from "react-native-paper";
 import { store } from "../../utils/store";
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
 export default function CustomDrawerContent(props) {
@@ -29,6 +22,7 @@ export default function CustomDrawerContent(props) {
               icon="account-outline"
               label="Thông tin cá nhân"
               onPress={() => {
+                DeviceEventEmitter.emit("SET_DATA_INFO");
                 props.navigation.navigate("ProfileUserScreen");
               }}
             ></Drawer.Item>
