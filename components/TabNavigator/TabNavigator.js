@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import WorkScreen from "../../screens/Work/WorkScreen";
 import HomeStack from "../../screens/Home/HomeStack";
-import SettingsStack from "../../screens/Settings/SettingsStack";
 import NotificationScreen from "../../screens/Notification/NotificationScreen";
 import SalaryScreen from "../../screens/Salary/SalaryScreen";
 const Tab = createBottomTabNavigator();
@@ -18,14 +17,14 @@ export default function TabNavigator() {
             iconName = focused
               ? require("../../assets/home.png")
               : require("../../assets/home-black.png");
-          } else if (route.name === "Settings") {
-            iconName = focused
-              ? require("../../assets/tools.png")
-              : require("../../assets/tools-black.png");
           } else if (route.name === "Notification") {
             iconName = focused
               ? require("../../assets/notification.png")
               : require("../../assets/notification-black.png");
+          } else if (route.name === "Work") {
+            iconName = focused
+              ? require("../../assets/work.png")
+              : require("../../assets/work-black.png");
           } else if (route.name === "Salary") {
             iconName = focused
               ? require("../../assets/money-bag.png")
@@ -47,7 +46,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Salary" component={SalaryScreen} />
-      <Tab.Screen name="Settings" component={SettingsStack} />
+      <Tab.Screen name="Work" component={WorkScreen} />
       <Tab.Screen name="Notification" component={NotificationScreen} />
     </Tab.Navigator>
   );

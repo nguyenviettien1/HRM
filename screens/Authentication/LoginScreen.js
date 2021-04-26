@@ -7,6 +7,7 @@ import {
   TextInput,
   Keyboard,
   Alert,
+  DeviceEventEmitter,
 } from "react-native";
 import { useState } from "react";
 import styles from "./styles";
@@ -17,6 +18,7 @@ export default function LoginScreen({ navigation }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+
   const onSignIn = () => {
     Keyboard.dismiss();
     if (userName == "") {
@@ -41,7 +43,10 @@ export default function LoginScreen({ navigation }) {
         if (responseJson.status) {
           setToken(responseJson.token);
           getInfo(responseJson.token);
+          getWork(responseJson.token);
+          getSalary(responseJson.token);
           store.setAccessToken(responseJson.token);
+          DeviceEventEmitter.emit("REFRESH_DATA");
         } else {
           Alert.alert(responseJson.message);
         }
@@ -62,6 +67,44 @@ export default function LoginScreen({ navigation }) {
         .then((responseJson) => {
           // console.log("user info", responseJson);
           store.setUserInfo(JSON.stringify(responseJson));
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const getWork = async (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/congviec.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          store.setWork(JSON.stringify(responseJson));
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const getSalary = async (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/luong.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          store.setSalary(JSON.stringify(responseJson));
         });
     } else {
       Alert.alert("ERROR SET AsyncStorage");
@@ -110,12 +153,9 @@ export default function LoginScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.buttonLogin}
-            onPress={
-              () => {
-                onSignIn();
-              }
-              //() => navigation.navigate("MenuTab")
-            }
+            onPress={() => {
+              onSignIn();
+            }}
           >
             <Text style={styles.buttonLoginText}>ĐĂNG NHẬP</Text>
           </TouchableOpacity>

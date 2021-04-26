@@ -7,11 +7,7 @@ import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 export default function SettingsScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <CustomHeader
-        title="CÀI ĐẶT"
-        isHome={true}
-        navigation={navigation}
-      ></CustomHeader>
+      <CustomHeader title="CÀI ĐẶT" navigation={navigation}></CustomHeader>
       <ProfileHeader></ProfileHeader>
       <ScrollView>
         <Drawer.Section style={styles.drawerSection}>

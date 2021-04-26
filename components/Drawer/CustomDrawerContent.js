@@ -23,13 +23,15 @@ export default function CustomDrawerContent(props) {
               label="Thông tin cá nhân"
               onPress={() => {
                 DeviceEventEmitter.emit("SET_DATA_INFO");
-                props.navigation.navigate("ProfileUserScreen");
+                props.navigation.navigate("ProfileStack");
               }}
             ></Drawer.Item>
             <Drawer.Item
-              icon="bookmark-outline"
-              label="BookMarks"
-              onPress={() => {}}
+              icon="tools"
+              label="Cài đặt"
+              onPress={() => {
+                props.navigation.navigate("SettingsStack");
+              }}
             ></Drawer.Item>
 
             <Drawer.Item
@@ -70,6 +72,8 @@ export default function CustomDrawerContent(props) {
           onPress={() => {
             store.removeAccessToken();
             store.removeUserInfo();
+            store.removeWork();
+            store.removeSalary();
             props.navigation.navigate("LoginScreen");
           }}
         ></Drawer.Item>

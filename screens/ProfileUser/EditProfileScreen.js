@@ -1,11 +1,12 @@
 import * as React from "react";
 import styles from "./styles";
 import {
-  Text,
+  TextInput,
   View,
   SafeAreaView,
   Image,
   DeviceEventEmitter,
+  Text,
 } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -20,7 +21,7 @@ import {
   MaterialIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
-export default function ProfileUserScreen({ navigation }) {
+export default function EditProfileScreen({ navigation }) {
   const [user, setUser] = useState();
 
   const setDataInfo = () => {
@@ -30,16 +31,9 @@ export default function ProfileUserScreen({ navigation }) {
       }
     });
   };
+
   useEffect(() => {
     setDataInfo();
-    DeviceEventEmitter.addListener("SET_DATA_INFO", (response) => {
-      setDataInfo();
-    });
-    return () => {
-      DeviceEventEmitter.removeListener("SET_DATA_INFO", (response) => {
-        onRefresh();
-      });
-    };
   }, []);
 
   return (
@@ -51,7 +45,7 @@ export default function ProfileUserScreen({ navigation }) {
       }}
     >
       <CustomHeader
-        title="THÔNG TIN CÁ NHÂN"
+        title="SỬA THÔNG TIN"
         navigation={navigation}
       ></CustomHeader>
       <View style={{ flex: 1, width: "100%" }}>
@@ -103,7 +97,7 @@ export default function ProfileUserScreen({ navigation }) {
                       ></FontAwesome>
                       <Text style={styles.age}>Giới tính:</Text>
                     </View>
-                    <Text>{user.gender == 1 ? "Nam" : "Nữ"}</Text>
+                    <Text>{user.gender ? "Nam" : "Nữ"}</Text>
                   </View>
                 </View>
               </View>
@@ -123,7 +117,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></FontAwesome>
                     <Text style={styles.age}>Tên:</Text>
                   </View>
-                  <Text>{user.name}</Text>
+                  <TextInput value={user.name}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -137,7 +131,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></MaterialCommunityIcons>
                     <Text style={styles.age}>Tuổi:</Text>
                   </View>
-                  <Text>{user.age}</Text>
+                  <TextInput value={user.age}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -151,7 +145,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></MaterialCommunityIcons>
                     <Text style={styles.age}>Ngày sinh:</Text>
                   </View>
-                  <Text>{user.dateOfBirth}</Text>
+                  <TextInput value={user.dateOfBirth}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -165,7 +159,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></FontAwesome>
                     <Text style={styles.age}>Giới tính:</Text>
                   </View>
-                  <Text>{user.gender == 0 ? "Nữ" : "Nam"}</Text>
+                  <Text>{user.gender ? "Nam" : "Nữ"}</Text>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -179,7 +173,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></Entypo>
                     <Text style={styles.age}>Quê quán:</Text>
                   </View>
-                  <Text>{user.address}</Text>
+                  <TextInput value={user.address}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -193,7 +187,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></FontAwesome>
                     <Text style={styles.age}>Dân tộc:</Text>
                   </View>
-                  <Text>{user.ethnicity}</Text>
+                  <TextInput value={user.ethnicity}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -207,7 +201,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></FontAwesome5>
                     <Text style={styles.age}>Tôn giáo:</Text>
                   </View>
-                  <Text>{user.religion}</Text>
+                  <TextInput value={user.religion}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -221,7 +215,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></MaterialCommunityIcons>
                     <Text style={styles.age}>Học vấn:</Text>
                   </View>
-                  <Text>{user.education}</Text>
+                  <TextInput value={user.education}></TextInput>
                 </View>
               </View>
             </View>
@@ -240,7 +234,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></FontAwesome>
                     <Text style={styles.age}>Số điện thoại:</Text>
                   </View>
-                  <Text>{user.phone}</Text>
+                  <TextInput value={user.phone}></TextInput>
                 </View>
               </View>
               <View style={styles.infoUser}>
@@ -254,7 +248,7 @@ export default function ProfileUserScreen({ navigation }) {
                     ></MaterialCommunityIcons>
                     <Text style={styles.age}>Email:</Text>
                   </View>
-                  <Text>{user.email}</Text>
+                  <TextInput value={user.email}></TextInput>
                 </View>
               </View>
             </View>
@@ -307,29 +301,6 @@ export default function ProfileUserScreen({ navigation }) {
             </View>
           </ScrollView>
         )}
-      </View>
-      <View
-        style={{
-          height: 50,
-          width: "90%",
-          backgroundColor: "#DDDDDD",
-          borderRadius: 12,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 10,
-          backgroundColor: "#58D3F7",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            DeviceEventEmitter.emit("EDIT_DATA_INFO");
-            navigation.navigate("EditProfileScreen");
-          }}
-        >
-          <Text style={{ alignContent: "center", fontSize: 20 }}>
-            Sửa thông tin
-          </Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

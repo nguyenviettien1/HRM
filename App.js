@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import TabNavigator from "./components/TabNavigator/TabNavigator";
 import CustomDrawerContent from "./components/Drawer/CustomDrawerContent";
-import ProfileUserScreen from "./screens/ProfileUser/ProfileUserScreen";
+import ProfileStack from "./screens/ProfileUser/ProfileStack";
 import SettingsStack from "./screens/Settings/SettingsStack";
 import InfoCompanyScreen from "./screens/InfoCompany/InfoCompanyScreen";
 import SupportScreen from "./screens/Support/SupportScreen";
@@ -22,10 +22,7 @@ export default function App() {
         <DrawerFull.Screen name="SplashScreen" component={SplashScreen} />
         <DrawerFull.Screen name="LoginScreen" component={LoginScreen} />
         <DrawerFull.Screen name="MenuTab" component={TabNavigator} />
-        <DrawerFull.Screen
-          name="ProfileUserScreen"
-          component={ProfileUserScreen}
-        />
+        <DrawerFull.Screen name="ProfileStack" component={ProfileStack} />
         <DrawerFull.Screen name="SettingsStack" component={SettingsStack} />
         <DrawerFull.Screen name="SupportScreen" component={SupportScreen} />
         <DrawerFull.Screen
