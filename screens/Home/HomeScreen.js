@@ -1,8 +1,41 @@
 import * as React from "react";
 import styles from "./styles";
-import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  FlatList,
+  DeviceEventEmitter,
+} from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
+import { useEffect } from "react/cjs/react.development";
+import CheckInList from "../../components/CheckInList/CheckInList";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useState } from "react";
 export default function HomeScreen({ navigation }) {
+  const [list, setList] = useState();
+
+  const setDataCheckIn = () => {
+    AsyncStorage.getItem("CHECKIN", (err, data) => {
+      console.log("----checkin:", data);
+      if (data) {
+        setList(JSON.parse(data));
+      }
+    });
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setDataCheckIn();
+    });
+    DeviceEventEmitter.addListener("REFRESH_DATA", (response) => {
+      setTimeout(() => {
+        setDataCheckIn();
+      }, 500);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomHeader
@@ -16,52 +49,20 @@ export default function HomeScreen({ navigation }) {
         </View>
         <View>
           <View style={{ flexDirection: "row", margin: 8 }}>
+            <Text style={{ flex: 1, fontWeight: "bold" }}>Ngày</Text>
             <Text style={{ flex: 1, fontWeight: "bold" }}>Thứ</Text>
             <Text style={{ flex: 1, fontWeight: "bold" }}>CheckIn</Text>
             <Text style={{ flex: 1, fontWeight: "bold" }}>CheckOut</Text>
-            <Text style={{ flex: 1, fontWeight: "bold" }}>WorkDays</Text>
+            <Text style={{ flex: 1, fontWeight: "bold" }}>WorkTime</Text>
           </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Monday</Text>
-            <Text style={{ flex: 1 }}>08:03:42</Text>
-            <Text style={{ flex: 1 }}>17:54:52</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Tuesday</Text>
-            <Text style={{ flex: 1 }}>08:33:42</Text>
-            <Text style={{ flex: 1 }}>17:51:52</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Wednesday</Text>
-            <Text style={{ flex: 1 }}>08:04:42</Text>
-            <Text style={{ flex: 1 }}>17:14:52</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Thursday</Text>
-            <Text style={{ flex: 1 }}>08:08:42</Text>
-            <Text style={{ flex: 1 }}>17:44:58</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Friday</Text>
-            <Text style={{ flex: 1 }}>08:03:42</Text>
-            <Text style={{ flex: 1 }}>17:54:52</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Saturnday</Text>
-            <Text style={{ flex: 1 }}>08:03:42</Text>
-            <Text style={{ flex: 1 }}>17:54:52</Text>
-            <Text style={{ flex: 1 }}>1</Text>
-          </View>
-          <View style={{ flexDirection: "row", margin: 8 }}>
-            <Text style={{ flex: 1 }}>Sunday</Text>
-            <Text style={{ flex: 1 }}></Text>
-            <Text style={{ flex: 1 }}></Text>
-            <Text style={{ flex: 1 }}>0</Text>
+          <View>
+            <FlatList
+              data={list}
+              renderItem={({ item }) => (
+                <CheckInList checkInList={item}></CheckInList>
+              )}
+              keyExtractor={(item, idx) => `${idx}`}
+            ></FlatList>
           </View>
         </View>
 

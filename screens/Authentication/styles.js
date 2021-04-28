@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#A9E2F3",
+    backgroundColor: "#F2F2F2",
   },
   content: {
     paddingHorizontal: 30,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#886A08",
+    backgroundColor: "#0a384f",
     justifyContent: "center",
     marginTop: 15,
   },

@@ -74,6 +74,7 @@ export default function CustomDrawerContent(props) {
             store.removeUserInfo();
             store.removeWork();
             store.removeSalary();
+            store.removeCheckIn();
             props.navigation.navigate("LoginScreen");
           }}
         ></Drawer.Item>

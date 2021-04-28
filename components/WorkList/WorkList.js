@@ -7,7 +7,7 @@ export default function WorkList(props) {
   return (
     <View
       style={{
-        backgroundColor: "#FFCCFF",
+        backgroundColor: "#F8E6E0",
         margin: 8,
         borderRadius: 5,
         padding: 10,

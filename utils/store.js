@@ -17,4 +17,8 @@ export const store = {
   getSalary: async () => AsyncStorage.getItem("SALARY"),
   setSalary: async (salary) => AsyncStorage.setItem("SALARY", salary),
   removeSalary: async () => AsyncStorage.removeItem("SALARY"),
+
+  getCheckIn: async () => AsyncStorage.getItem("CHECKIN"),
+  setCheckIn: async (checkIn) => AsyncStorage.setItem("CHECKIN", checkIn),
+  removeCheckIn: async () => AsyncStorage.removeItem("CHECKIN"),
 };

@@ -45,6 +45,7 @@ export default function LoginScreen({ navigation }) {
           getInfo(responseJson.token);
           getWork(responseJson.token);
           getSalary(responseJson.token);
+          getCheckIn(responseJson.token);
           store.setAccessToken(responseJson.token);
           DeviceEventEmitter.emit("REFRESH_DATA");
         } else {
@@ -105,6 +106,25 @@ export default function LoginScreen({ navigation }) {
         .then((response) => response.json())
         .then((responseJson) => {
           store.setSalary(JSON.stringify(responseJson));
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const getCheckIn = async (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/chamcong.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          store.setCheckIn(JSON.stringify(responseJson));
         });
     } else {
       Alert.alert("ERROR SET AsyncStorage");
