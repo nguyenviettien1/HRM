@@ -19,18 +19,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
   },
-  buttonGreen: {
+  buttonCheckIn: {
     height: "100%",
-    backgroundColor: "green",
     borderWidth: 1,
     alignItems: "center",
+    borderRadius: 8,
   },
-  buttonRed: {
-    height: "100%",
-    backgroundColor: "red",
-    borderWidth: 1,
-    alignItems: "center",
-  },
+
   buttonText: {
     fontWeight: "bold",
     color: "#fff",

@@ -13,7 +13,7 @@ export default function SalaryList(props) {
   return (
     <View
       style={{
-        backgroundColor: "#CCFFFF",
+        backgroundColor: "#E3F6CE",
         margin: 8,
         borderRadius: 5,
         padding: 10,
