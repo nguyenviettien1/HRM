@@ -14,25 +14,44 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useState } from "react";
 export default function WorkScreen({ navigation }) {
   const [list, setList] = useState();
-
-  const setDataWork = () => {
-    AsyncStorage.getItem("WORK", (err, data) => {
+  const [token, setToken] = useState();
+  const setDataToken = () => {
+    AsyncStorage.getItem("ACCESSTOKEN", (err, data) => {
       if (data) {
-        setList(JSON.parse(data));
+        setToken(data);
+        setDataWork(data);
       }
     });
   };
+  const setDataWork = (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/congviec.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setList(responseJson);
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setDataWork();
+      setDataToken();
     });
     DeviceEventEmitter.addListener("REFRESH_DATA", (response) => {
       setTimeout(() => {
-        setDataWork();
+        setDataToken();
       }, 500);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, token]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -45,6 +64,7 @@ export default function WorkScreen({ navigation }) {
         <View style={styles.divider}>
           <Text style={styles.dividerText}>KPI công việc theo tháng</Text>
         </View>
+
         <View style={{ paddingBottom: 35 }}>
           <FlatList
             style={{ height: "100%" }}

@@ -14,25 +14,46 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useState } from "react";
 export default function SalaryScreen({ navigation }) {
   const [list, setList] = useState();
-
-  const setDataSalary = () => {
-    AsyncStorage.getItem("SALARY", (err, data) => {
+  const [token, setToken] = useState();
+  const setDataToken = () => {
+    AsyncStorage.getItem("ACCESSTOKEN", (err, data) => {
       if (data) {
-        setList(JSON.parse(data));
+        setToken(data);
+        setDataSalary(data);
       }
     });
   };
+
+  const setDataSalary = (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/luong.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setList(responseJson);
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setDataSalary();
+      setDataToken();
     });
     DeviceEventEmitter.addListener("REFRESH_DATA", (response) => {
       setTimeout(() => {
-        setDataSalary();
+        setDataToken();
       }, 500);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, token]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

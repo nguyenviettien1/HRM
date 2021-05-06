@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   },
   buttonCheckIn: {
     height: "100%",
-    borderWidth: 1,
     alignItems: "center",
     borderRadius: 8,
   },

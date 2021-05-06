@@ -72,9 +72,6 @@ export default function CustomDrawerContent(props) {
           onPress={() => {
             store.removeAccessToken();
             store.removeUserInfo();
-            store.removeWork();
-            store.removeSalary();
-            store.removeCheckIn();
             props.navigation.navigate("LoginScreen");
           }}
         ></Drawer.Item>

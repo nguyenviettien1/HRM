@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   DeviceEventEmitter,
+  Alert,
 } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { useEffect } from "react/cjs/react.development";
@@ -15,31 +16,132 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useState } from "react";
 export default function HomeScreen({ navigation }) {
   const [list, setList] = useState();
+  const [token, setToken] = useState();
 
-  const setDataCheckIn = () => {
-    AsyncStorage.getItem("CHECKIN", (err, data) => {
+  const setDataToken = () => {
+    AsyncStorage.getItem("ACCESSTOKEN", (err, data) => {
       if (data) {
-        setList(JSON.parse(data));
+        setToken(data);
+        setCheckInToday(data);
+        setDataCheckIn(data);
       }
     });
   };
+
+  const setDataCheckIn = (token) => {
+    if (token && token != "") {
+      fetch("http://192.168.1.12:8080/apiHRM/chamcong.php?token=" + token, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setList(responseJson);
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const setCheckInToday = (token) => {
+    if (token && token != "") {
+      fetch(
+        "http://192.168.1.12:8080/apiHRM/chamcong/getCheckin.php?token=" +
+          token,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status == true) {
+            setCheckIn(responseJson.chamcong.checkInAt);
+            if (responseJson.chamcong.checkOutAt != null) {
+              setCheckOut(responseJson.chamcong.checkOutAt);
+              setWorkT(responseJson.chamcong.workTime);
+            }
+          } else {
+            setCheckIn("");
+            setCheckOut("");
+            setWorkT("");
+          }
+        });
+    } else {
+      Alert.alert("Không có token");
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setDataCheckIn();
+      setDataToken();
       getNewDay();
     });
     DeviceEventEmitter.addListener("REFRESH_DATA", (response) => {
       setTimeout(() => {
-        setDataCheckIn();
+        setDataToken();
       }, 500);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, token]);
+
+  const getTimestamp = (x) => {
+    var date = new Date(x * 1000);
+    var hours = date.getHours().toString();
+    var minutes = date.getMinutes().toString();
+    var seconds = date.getSeconds().toString();
+    if (hours < 10) {
+      var hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      var minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      var seconds = "0" + seconds;
+    }
+    return hours + ":" + minutes + ":" + seconds;
+  };
+
+  const getWorkTime = (x) => {
+    var hours = Math.floor(x / 3600);
+    var minutes = Math.floor((x - hours * 3600) / 60);
+    var seconds = x - hours * 3600 - minutes * 60;
+    if (hours < 10) {
+      var hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      var minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      var seconds = "0" + seconds;
+    }
+    return hours + ":" + minutes + ":" + seconds;
+  };
+
   const [newDay, setnewDay] = useState();
   const [newThu, setnewThu] = useState();
+  const [checkIn, setCheckIn] = useState();
+  const [checkOut, setCheckOut] = useState();
+  const [workT, setWorkT] = useState();
   const getNewDay = () => {
     var today = new Date();
-    var date = today.getDate() + "/" + (today.getMonth() + 1);
+    var _month = today.getMonth() + 1;
+    var _dateT = today.getDate();
+    if (today.getMonth() + 1 < 10) {
+      _month = "0" + (today.getMonth() + 1);
+    }
+    if (today.getDate() < 10) {
+      _dateT = "0" + today.getDate();
+    }
+    var date = _dateT + "/" + _month;
     setnewDay(date);
     var current_day = today.getDay();
     switch (current_day) {
@@ -65,6 +167,104 @@ export default function HomeScreen({ navigation }) {
         setnewThu("Thứ bảy");
     }
   };
+
+  const postCheckIn = async () => {
+    if (token && token != "") {
+      fetch(
+        "http://192.168.1.12:8080/apiHRM/chamcong/postCheckin.php?token=" +
+          token,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status == true) {
+            fetch(
+              "http://192.168.1.12:8080/apiHRM/chamcong/getCheckin.php?token=" +
+                token,
+              {
+                method: "GET",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Credentials": true,
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((responseJson) => {
+                if (responseJson.status == true) {
+                  setCheckIn(responseJson.chamcong.checkInAt);
+                } else {
+                  console.log(responseJson.status);
+                }
+              });
+          }
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const postCheckOut = async () => {
+    if (token && token != "") {
+      fetch(
+        "http://192.168.1.12:8080/apiHRM/chamcong/postCheckout.php?token=" +
+          token,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status == true) {
+            fetch(
+              "http://192.168.1.12:8080/apiHRM/chamcong/getCheckin.php?token=" +
+                token,
+              {
+                method: "GET",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Credentials": true,
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((responseJson) => {
+                if (responseJson.status == true) {
+                  setCheckOut(responseJson.chamcong.checkOutAt);
+                  setWorkT(responseJson.chamcong.workTime);
+                } else {
+                  console.log(responseJson.status);
+                }
+              });
+          }
+        });
+    } else {
+      Alert.alert("ERROR SET AsyncStorage");
+    }
+  };
+
+  const onClickCheckIn = () => {
+    postCheckIn();
+  };
+
+  const onClickCheckOut = () => {
+    postCheckOut();
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomHeader
@@ -102,9 +302,23 @@ export default function HomeScreen({ navigation }) {
           <View style={{ flexDirection: "row", margin: 8 }}>
             <Text style={{ flex: 1 }}>{newDay}</Text>
             <Text style={{ flex: 1 }}>{newThu}</Text>
-            <Text style={{ flex: 1 }}></Text>
-            <Text style={{ flex: 1 }}></Text>
-            <Text style={{ flex: 1 }}></Text>
+
+            {checkIn ? (
+              <Text style={{ flex: 1 }}>{getTimestamp(checkIn)}</Text>
+            ) : (
+              <Text style={{ flex: 1 }}>_________</Text>
+            )}
+
+            {checkOut ? (
+              <Text style={{ flex: 1 }}>{getTimestamp(checkOut)}</Text>
+            ) : (
+              <Text style={{ flex: 1 }}>_________</Text>
+            )}
+            {workT ? (
+              <Text style={{ flex: 1 }}>{getWorkTime(workT)}</Text>
+            ) : (
+              <Text style={{ flex: 1 }}>_________</Text>
+            )}
           </View>
         </View>
 
@@ -113,11 +327,11 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={{
                 ...styles.buttonCheckIn,
-                backgroundColor: "green",
-                borderColor: "green",
+                backgroundColor: checkIn ? "#ccc" : "green",
               }}
               onPress={() => {
-                navigation.navigate("HomeDetail");
+                if (checkIn) return;
+                onClickCheckIn();
               }}
             >
               <Text style={styles.buttonText}>Check In</Text>
@@ -127,11 +341,11 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={{
                 ...styles.buttonCheckIn,
-                backgroundColor: "red",
-                borderColor: "red",
+                backgroundColor: checkOut ? "#ccc" : "red",
               }}
               onPress={() => {
-                navigation.navigate("HomeDetail");
+                if (checkOut) return;
+                onClickCheckOut();
               }}
             >
               <Text style={styles.buttonText}>Check Out</Text>
