@@ -12,7 +12,6 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useEffect } from "react/cjs/react.development";
-import { store } from "../../utils/store";
 import {
   MaterialCommunityIcons,
   FontAwesome,

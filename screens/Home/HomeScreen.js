@@ -8,6 +8,7 @@ import {
   FlatList,
   DeviceEventEmitter,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { useEffect } from "react/cjs/react.development";
@@ -15,7 +16,7 @@ import CheckInList from "../../components/CheckInList/CheckInList";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useState } from "react";
 export default function HomeScreen({ navigation }) {
-  const [list, setList] = useState();
+  const [list, setList] = useState([]);
   const [token, setToken] = useState();
 
   const setDataToken = () => {
@@ -43,7 +44,7 @@ export default function HomeScreen({ navigation }) {
           setList(responseJson);
         });
     } else {
-      Alert.alert("ERROR SET AsyncStorage");
+      Alert.alert("ERROR SET DATA CHECKIN");
     }
   };
 
@@ -284,7 +285,23 @@ export default function HomeScreen({ navigation }) {
             <Text style={{ flex: 1, fontWeight: "bold" }}>CheckOut</Text>
             <Text style={{ flex: 1, fontWeight: "bold" }}>WorkTime</Text>
           </View>
-          <View>
+          <View style={{ minHeight: 270 }}>
+            {list.length === 0 && (
+              <ActivityIndicator
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                size="large"
+                color="#0a384f"
+              />
+            )}
+
             <FlatList
               data={list}
               renderItem={({ item }) => (

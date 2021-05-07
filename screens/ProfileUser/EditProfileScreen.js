@@ -1,19 +1,11 @@
 import * as React from "react";
 import styles from "./styles";
-import {
-  TextInput,
-  View,
-  SafeAreaView,
-  Image,
-  DeviceEventEmitter,
-  Text,
-} from "react-native";
+import { TextInput, View, SafeAreaView, Image, Text } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useEffect } from "react/cjs/react.development";
-import { store } from "../../utils/store";
 import {
   MaterialCommunityIcons,
   FontAwesome,
