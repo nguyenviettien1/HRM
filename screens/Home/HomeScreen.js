@@ -296,8 +296,6 @@ export default function HomeScreen({ navigation }) {
               .then((responseJson) => {
                 if (responseJson.status == true) {
                   setCheckIn(responseJson.chamcong.checkInAt);
-                } else {
-                  console.log(responseJson.status);
                 }
               });
           }
@@ -341,8 +339,6 @@ export default function HomeScreen({ navigation }) {
                 if (responseJson.status == true) {
                   setCheckOut(responseJson.chamcong.checkOutAt);
                   setWorkT(responseJson.chamcong.workTime);
-                } else {
-                  console.log(responseJson.status);
                 }
               });
           }
