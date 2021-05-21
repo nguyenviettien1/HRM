@@ -39,7 +39,6 @@ export default function LoginScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
         if (responseJson.status) {
           setToken(responseJson.token);
           getInfo(responseJson.token);

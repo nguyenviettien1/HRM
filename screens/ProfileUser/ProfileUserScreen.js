@@ -311,7 +311,6 @@ export default function ProfileUserScreen({ navigation }) {
         style={{
           height: 50,
           width: "90%",
-          backgroundColor: "#DDDDDD",
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",

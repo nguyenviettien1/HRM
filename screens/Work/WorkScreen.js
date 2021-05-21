@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   FlatList,
   DeviceEventEmitter,
+  ActivityIndicator,
 } from "react-native";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { useEffect } from "react/cjs/react.development";
@@ -13,7 +14,7 @@ import WorkList from "../../components/WorkList/WorkList";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useState } from "react";
 export default function WorkScreen({ navigation }) {
-  const [list, setList] = useState();
+  const [list, setList] = useState([]);
   const [token, setToken] = useState();
   const setDataToken = () => {
     AsyncStorage.getItem("ACCESSTOKEN", (err, data) => {
@@ -65,7 +66,22 @@ export default function WorkScreen({ navigation }) {
           <Text style={styles.dividerText}>KPI công việc theo tháng</Text>
         </View>
 
-        <View style={{ paddingBottom: 35 }}>
+        <View style={{ minHeight: 200, paddingBottom: 35 }}>
+          {list.length === 0 && (
+            <ActivityIndicator
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              size="large"
+              color="#0a384f"
+            />
+          )}
           <FlatList
             style={{ height: "100%" }}
             data={list}

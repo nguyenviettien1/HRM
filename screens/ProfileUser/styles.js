@@ -40,6 +40,28 @@ const styles = StyleSheet.create({
   infoUser: {
     margin: 8,
   },
+  editInfoName: {
+    padding: 16,
+  },
+  textInfoName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#0a384f",
+    marginBottom: 4,
+    marginTop: 4,
+  },
+  textInput: {
+    paddingLeft: 8,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    paddingBottom: 7,
+    paddingTop: 7,
+  },
+  textInputPicker: {
+    paddingLeft: 8,
+    borderColor: "#ccc",
+    borderWidth: 1,
+  },
 });
 
 export default styles;

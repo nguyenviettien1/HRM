@@ -14,10 +14,98 @@ import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import { useEffect } from "react/cjs/react.development";
 import CheckInList from "../../components/CheckInList/CheckInList";
 import AsyncStorage from "@react-native-community/async-storage";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 import { useState } from "react";
+import Toast from "react-native-simple-toast";
 export default function HomeScreen({ navigation }) {
   const [list, setList] = useState([]);
   const [token, setToken] = useState();
+  const [user, setUser] = useState();
+  const askForPermission = async () => {
+    const permissionResult = await Permissions.askAsync(Permissions.CAMERA);
+    if (permissionResult.status !== "granted") {
+      Alert.alert("no permissions to access camera!", [{ text: "ok" }]);
+      return false;
+    }
+    return true;
+  };
+
+  const takeImageCheckIn = async (x) => {
+    const hasPermission = await askForPermission();
+    if (!hasPermission) {
+      return;
+    } else {
+      let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [3, 3],
+        quality: 0,
+        base64: true,
+      });
+      if (!image.cancelled) {
+        fetch("http://192.168.1.12:8000/recog", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: image.base64.toString(),
+          }),
+        })
+          .then((response) => response.text())
+          .then((responseJson) => {
+            if (responseJson === x.id) {
+              Toast.show("Nhận diện thành công " + `${x.name}`);
+              postCheckIn();
+            } else {
+              Toast.show("Nhận diện id khác với tài khoản");
+            }
+          })
+          .catch((err) => {
+            Toast.show("Nhận diện thất bại");
+          });
+      }
+    }
+  };
+
+  const takeImageCheckOut = async (x) => {
+    const hasPermission = await askForPermission();
+    if (!hasPermission) {
+      return;
+    } else {
+      let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [3, 3],
+        quality: 0,
+        base64: true,
+      });
+      if (!image.cancelled) {
+        fetch("http://192.168.1.12:8000/recog", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: image.base64.toString(),
+          }),
+        })
+          .then((response) => response.text())
+          .then((responseJson) => {
+            if (responseJson === x.id) {
+              Toast.show("Nhận diện thành công " + `${x.name}`);
+              postCheckOut();
+            } else {
+              Toast.show("Nhận diện id khác với tài khoản");
+            }
+          })
+          .catch((err) => {
+            Toast.show("Nhận diện thất bại");
+          });
+      }
+    }
+  };
 
   const setDataToken = () => {
     AsyncStorage.getItem("ACCESSTOKEN", (err, data) => {
@@ -25,6 +113,12 @@ export default function HomeScreen({ navigation }) {
         setToken(data);
         setCheckInToday(data);
         setDataCheckIn(data);
+      }
+    });
+
+    AsyncStorage.getItem("USERINFO", (err, data) => {
+      if (data) {
+        setUser(JSON.parse(data));
       }
     });
   };
@@ -258,14 +352,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const onClickCheckIn = () => {
-    postCheckIn();
-  };
-
-  const onClickCheckOut = () => {
-    postCheckOut();
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomHeader
@@ -348,7 +434,7 @@ export default function HomeScreen({ navigation }) {
               }}
               onPress={() => {
                 if (checkIn) return;
-                onClickCheckIn();
+                takeImageCheckIn(user);
               }}
             >
               <Text style={styles.buttonText}>Check In</Text>
@@ -362,7 +448,7 @@ export default function HomeScreen({ navigation }) {
               }}
               onPress={() => {
                 if (checkOut) return;
-                onClickCheckOut();
+                takeImageCheckOut(user);
               }}
             >
               <Text style={styles.buttonText}>Check Out</Text>
