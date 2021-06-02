@@ -22,6 +22,8 @@ export default function HomeScreen({ navigation }) {
   const [list, setList] = useState([]);
   const [token, setToken] = useState();
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(0);
+  const [loading1, setLoading1] = useState(0);
   const askForPermission = async () => {
     const permissionResult = await Permissions.askAsync(Permissions.CAMERA);
     if (permissionResult.status !== "granted") {
@@ -42,6 +44,7 @@ export default function HomeScreen({ navigation }) {
         quality: 0,
         base64: true,
       });
+      setLoading(1);
       if (!image.cancelled) {
         fetch("http://192.168.1.12:8000/recog", {
           method: "POST",
@@ -80,6 +83,7 @@ export default function HomeScreen({ navigation }) {
         quality: 0,
         base64: true,
       });
+      setLoading1(1);
       if (!image.cancelled) {
         fetch("http://192.168.1.12:8000/recog", {
           method: "POST",
@@ -402,16 +406,48 @@ export default function HomeScreen({ navigation }) {
             <Text style={{ flex: 1 }}>{newDay}</Text>
             <Text style={{ flex: 1 }}>{newThu}</Text>
 
-            {checkIn ? (
+            {checkIn && loading === 1 ? (
               <Text style={{ flex: 1 }}>{getTimestamp(checkIn)}</Text>
-            ) : (
+            ) : loading === 0 ? (
               <Text style={{ flex: 1 }}>_________</Text>
+            ) : (
+              <View style={{ flex: 1 }}>
+                <ActivityIndicator
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  size="small"
+                  color="green"
+                />
+              </View>
             )}
 
-            {checkOut ? (
+            {checkOut && loading1 === 1 ? (
               <Text style={{ flex: 1 }}>{getTimestamp(checkOut)}</Text>
-            ) : (
+            ) : loading1 === 0 ? (
               <Text style={{ flex: 1 }}>_________</Text>
+            ) : (
+              <View style={{ flex: 1 }}>
+                <ActivityIndicator
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  size="small"
+                  color="red"
+                />
+              </View>
             )}
             {workT ? (
               <Text style={{ flex: 1 }}>{getWorkTime(workT)}</Text>

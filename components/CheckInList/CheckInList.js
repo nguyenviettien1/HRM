@@ -49,6 +49,12 @@ export default function CheckInList(props) {
     return hours + ":" + minutes + ":" + seconds;
   };
 
+  const checkDiLam = (x) => {
+    var date = new Date(x * 1000);
+    var hours = date.getHours().toString();
+    return hours;
+  };
+
   const getWorkTime = (x) => {
     var hours = Math.floor(x / 3600);
     var minutes = Math.floor((x - hours * 3600) / 60);
@@ -73,7 +79,16 @@ export default function CheckInList(props) {
             10
           )}/${checkInList.day.substring(5, 7)}`}</Text>
           <Text style={{ flex: 1 }}>{getThu(checkInList.day)}</Text>
-          <Text style={{ flex: 1 }}>{getTimestamp(checkInList.checkInAt)}</Text>
+          {checkDiLam(checkInList.checkInAt) < 8 ? (
+            <Text style={{ flex: 1 }}>
+              {getTimestamp(checkInList.checkInAt)}
+            </Text>
+          ) : (
+            <Text style={{ flex: 1, color: "red" }}>
+              {getTimestamp(checkInList.checkInAt)}
+            </Text>
+          )}
+
           <Text style={{ flex: 1 }}>
             {getTimestamp(checkInList.checkOutAt)}
           </Text>
